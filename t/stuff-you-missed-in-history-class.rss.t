@@ -11,7 +11,7 @@ use Test::More tests => 4;
 $Sevenroot::FeedParser::DEBUG = $Sevenroot::FeedParser::DEBUG = 0;
 my $datafile = catfile $Bin, "testdata", basename($0, ".t");
 
-use_ok("Sevenroot::FeedParser", qw(parse parsefile));
+use_ok("Sevenroot::FeedParser", qw(parse parsefile parseurl));
 ok(-f $datafile, "datafile exists");
 
 my $feed = parsefile($datafile);
