@@ -9,6 +9,7 @@ $DEBUG = 0 unless defined $DEBUG;
 @EXPORT_OK = qw(parsefile parse);
 
 use Data::Dumper;
+use Sevenroot::FeedParser::RSS;
 
 sub parsefile {
     my $filename = shift;
@@ -42,16 +43,10 @@ sub parse {
 
 sub _parse_rss {
     my $data = shift;
-    my %feed = (meta => {}, channel => {}, entries => []);
 
     _debug("Parsing data as rss: ", substr($data, 0, 30), "...");
 
-    $feed{'meta'}->{'namespaces'} = _extract_namespaces(\$data);
-    $feed{'meta'}->{'xml_attrs'} = _extract_xml_attrs(\$data);
-
-    $feed{'channel'}->{'raw'} = _extract_channel_metadata(\$data);
-
-    return \%feed;
+    return Sevenroot::FeedParser::RSS->parse($data);
 }
 
 sub _parse_atom {
@@ -60,78 +55,15 @@ sub _parse_atom {
 
     _debug("Parsing data as atom ", substr($data, 0, 30), "...");
 
+    $feed{'meta'}->{'type'} = 'Atom';
     $feed{'meta'}->{'namespaces'} = _extract_namespaces(\$data);
     $feed{'meta'}->{'xml_attrs'} = _extract_xml_attrs(\$data);
 
     return \%feed;
 }
 
-# ----------------------------------------------------------------------
-# _extract_root_element(\$data)
-#
-# Extracts the root element from the data.
-# ----------------------------------------------------------------------
-sub _extract_root_element {
-    my $data = shift;
-    my ($root_elem) = $$data =~ m!^<((rss|feed)[^>]+)>!;
-    return $root_elem;
-}
-
-# ----------------------------------------------------------------------
-# extract_namespaces(\$data)
-#
-# Return a hash of namespaces from the root element.  The default namespace
-# comes back as _.
-# ----------------------------------------------------------------------
-sub _extract_namespaces {
-    my $data = shift;
-    my $root_elem = _extract_root_element($data);
-
-    my %ns = map {
-        my ($ns, $uri) = m!xmlns(:.+?)?=(.+)!;
-        $uri =~ s/["']//g;
-        $ns =~ s/^://;
-        $ns ||= '_';
-        $ns => $uri;
-    } grep /^xmlns/, split /\s+/, $root_elem;
-
-    return \%ns;
-}
-
-# ----------------------------------------------------------------------
-# _extract_xml_attrs(\$data)
-# 
-# Return xml: attributes from the root element
-# ----------------------------------------------------------------------
-sub _extract_xml_attrs {
-    my $data = shift;
-    my $root_elem = _extract_root_element($data);
-
-    my %attrs = map {
-        my ($attr, $uri) = m!xml:(.+?)=(.+)!;
-        $uri =~ s/["']//g;
-        $attr => $uri;
-    } grep /^xml:/, split /\s+/, $root_elem;
-
-    return \%attrs;
-}
-
-# ----------------------------------------------------------------------
-# _extract_channel_metadata(\$data)
-#
-# Extract the <channel> element from an RSS feed
-# ----------------------------------------------------------------------
-sub _extract_channel_metadata {
-    my $data = shift;
-    my %channel;
-    my ($channel) = $$data =~ m!<channel>\s*(.+?)\s*<item!s;
-
-    $channel{'raw'} = $channel;
-    $channel{'bits'} = [];
 
 
-    return \%channel;
-}
 
 # ----------------------------------------------------------------------
 # _extract_feed_metadata(\$data)
