@@ -96,7 +96,8 @@ sub extract_items {
     for my $raw_entry (@raw_entries) {
         my %entry;
 
-        for my $field (qw(title link description comments guid pubDate)) {
+        # Simple scalar fields
+        for my $field (qw(title link description comments guid pubDate author)) {
             if ($raw_entry =~ s!<$field>(.+?)</$field>!!s) {
                 ($entry{ $field }) = "$1";
             }
@@ -105,6 +106,7 @@ sub extract_items {
             }
         }
 
+        # Category is potentially multivalued
         $entry{'categories'} = [];
         if ($raw_entry =~ m!</category>!) {
             while ($raw_entry =~ s!<(category.*?</category)>!!s) {
@@ -117,7 +119,7 @@ sub extract_items {
             }
         }
 
-        # TODO source has a mandatory @url attribute
+        # source is a single tag with attributes
         $entry{'source'} = {};
         if ($raw_entry =~ m!</source>!) {
             my ($source) = $raw_entry =~ s!<(source.+?</source)>!!;
@@ -125,12 +127,19 @@ sub extract_items {
             ($entry{'source'}->{'url'}) = $source =~ m! url=.(.+).>!;
         }
 
-        # TODO enclosure
-        # XXX enclosure is not a container tag, and has attributes
-        #enclosure
+        # enclosure is a single tag with attributes
         $entry{'enclosure'} = {};
+        if ($raw_entry =~ s!<enclosure(.+?)/>!!s) {
+            my ($enc) = "$1";
 
-        #author 
+            for my $field (qw(url length type)) {
+                if ($enc =~ m!$field=(['"])(.+?)\1!) {
+                    $entry{'enclosure'}->{ $field } = "$2";
+                }
+            }
+        }
+
+        # Clean up author 
         if (my $str = delete $entry{'author'}) {
             $entry{'author'} = extract_email_address($str);
         }
