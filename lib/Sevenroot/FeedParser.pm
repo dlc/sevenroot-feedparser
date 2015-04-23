@@ -54,8 +54,11 @@ sub parse {
     _debug("\$data is ", length($data), " bytes");
     _debug("head(\$data) = '", substr($data, 0, 100), "'...");
 
-    # Strip <?xml> tag
-    $data =~ s!^\s*<\?xml[^>]+\?>\s*!!m;
+    # Strip all XML directives
+    $data =~ s!<\?.+?\?>!!g;
+
+    # Strip leading whitespace
+    $data =~ s/^\s*//;
 
     if ($data =~ /^<rss/) {
         _debug("Parsing data as rss: ", substr($data, 0, 30), "...");
