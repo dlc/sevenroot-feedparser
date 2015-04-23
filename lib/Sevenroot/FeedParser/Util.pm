@@ -2,6 +2,7 @@ package Sevenroot::FeedParser::Util;
 
 use strict;
 use vars qw(@EXPORT);
+use vars qw($RSS_DOCS_LINK $ATOM_DOCS_LINK);
 use base qw(Exporter);
 
 @EXPORT = qw(
@@ -11,6 +12,9 @@ use base qw(Exporter);
     extract_email_address
     docs_link
 );
+
+$RSS_DOCS_LINK = 'http://cyber.law.harvard.edu/rss/rss.html';
+$ATOM_DOCS_LINK = 'http://atomenabled.org/';
 
 # ----------------------------------------------------------------------
 # extract_namespaces(\$data)
@@ -75,7 +79,7 @@ sub extract_email_address {
 
    ($em) = $str =~ /(\S+@\S+)/;
     $em =~ s/^<//;
-    $em =~ s/^>//;
+    $em =~ s/>$//;
 
     return $em;
 }
@@ -88,8 +92,8 @@ sub extract_email_address {
 sub docs_link {
     my $type = lc shift;
 
-    return 'http://cyber.law.harvard.edu/rss/rss.html' if 'rss' eq $type;
-    return 'http://atomenabled.org/' if 'atom' eq $type;
+    return $RSS_DOCS_LINK if 'rss' eq $type;
+    return $ATOM_DOCS_LINK if 'atom' eq $type;
 
     return;
 }
