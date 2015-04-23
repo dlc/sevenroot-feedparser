@@ -5,7 +5,7 @@ use strict;
 use File::Spec::Functions qw(catfile);
 use File::Basename qw(basename);
 use FindBin qw($Bin);
-use Test::More tests => 5;
+use Test::More tests => 8;
 
 # Disable DEBUG, and silence warnings
 $Sevenroot::FeedParser::DEBUG = $Sevenroot::FeedParser::DEBUG = 0;
@@ -22,5 +22,17 @@ is($feed->{'channel'}->{'webmaster'},
     "webmaster parses correctly");
 
 is(scalar @{ $feed->{'entries'} },
-   2, 
+   3, 
    "Number of entries parsed correctly");
+
+is(scalar @{ $feed->{'entries'}->[1]->{'categories'} },
+   1,
+   "Parsed categories");
+
+is($feed->{'entries'}->[1]->{'categories'}->[0]->{'text'},
+   "Testing",
+   "Parsed 'Testing' category correctly");
+
+like($feed->{'entries'}->[2]->{'enclosure'}->{'url'},
+     qr/\.mp3/,
+     "Extract enclosure");

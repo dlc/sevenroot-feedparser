@@ -29,7 +29,11 @@
             <description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at blandit magna. Ut et gravida lacus. Donec bibendum eleifend iaculis. Nulla placerat arcu et dui lobortis auctor. Aliquam vel risus nisi. Donec luctus convallis rutrum. In tincidunt urna et leo accumsan, vitae rhoncus massa dapibus. Duis at faucibus tortor. In at urna quis lectus tincidunt lacinia nec sit amet nulla.</description>
             <pubDate>Wed, 20 Apr 2015 15:45:16 -0400</pubDate>
             <guid>http://www.example.com/articles/1.html</guid>
+        <category>Testing</category>
+        </item>
         <item>
+          <title>Test Entry #3</title>
+          <enclosure url="http://www.example.com/podcast3.mp3"/>
         </item>
     </channel>
 </rss>
