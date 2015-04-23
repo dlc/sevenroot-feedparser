@@ -5,7 +5,7 @@ use vars qw($VERSION @EXPORT_OK $DEBUG);
 use base qw(Exporter);
 
 $VERSION = "0.01";
-$DEBUG = 1 unless defined $DEBUG;
+$DEBUG = 0 unless defined $DEBUG;
 @EXPORT_OK = qw(parsefile parse);
 
 use Data::Dumper;
@@ -48,6 +48,8 @@ sub _parse_rss {
 
     $feed{'meta'}->{'namespaces'} = _extract_namespaces(\$data);
     $feed{'meta'}->{'xml_attrs'} = _extract_xml_attrs(\$data);
+
+    $feed{'channel'}->{'raw'} = _extract_channel_metadata(\$data);
 
     return \%feed;
 }
@@ -115,6 +117,29 @@ sub _extract_xml_attrs {
 }
 
 # ----------------------------------------------------------------------
+# _extract_channel_metadata(\$data)
+#
+# Extract the <channel> element from an RSS feed
+# ----------------------------------------------------------------------
+sub _extract_channel_metadata {
+    my $data = shift;
+    my %channel;
+    my ($channel) = $$data =~ m!<channel>\s*(.+?)\s*<item!s;
+
+    $channel{'raw'} = $channel;
+    $channel{'bits'} = [];
+
+
+    return \%channel;
+}
+
+# ----------------------------------------------------------------------
+# _extract_feed_metadata(\$data)
+# 
+# Extract the feed-related data from an Atom feed
+# ----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------
 # Emit debugging imformation, if required
 # ----------------------------------------------------------------------
 sub _debug {
@@ -153,6 +178,11 @@ install things like expat and XML::LibXML. It is similar is scope
 and function to Mark Pilgrim's Universal Feed Parser
 (https://github.com/kurtmckee/feedparser).
 
+Note that this is *not* a general-purpose XML parser, and will most
+likely be lossy; it will only extract known elements from RSS and
+Atom feeds, but I will try to make it cover all the cases documented
+in the specs.
+
 =head1 INTERFACE
 
 C<Sevenroot::FeedParser> provides a pair of functions, C<parsefile>
@@ -160,6 +190,14 @@ and C<parse>, which, when feed an RSS or Atom document, return a
 normalized data structure. As C<parsefile> simply opens a file and
 then passes the contents to C<parse>, these docs will simply refer
 to C<parse>.
+
+A call to C<parse> will return a data structure (see L</PARSED DATA
+STRUCTURE>) on success, or undef on failure.  Note that there is no
+explicit check that the XML is well-formed, so that by itself is not
+cause for failure, but if the contents of the feed are not similar
+enough to the spec, key elements won't be extractable; depending on
+how malformed the data is, C<parse> might not be able to extract the
+proper information.
 
 =head1 PARSED DATA STRUCTURE
 
