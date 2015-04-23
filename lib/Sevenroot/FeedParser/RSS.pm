@@ -130,15 +130,11 @@ sub extract_items {
         }
 
         # enclosure is a single tag with attributes
-        $entry{'enclosure'} = {};
-        if ($raw_entry =~ s!<enclosure(.+?)/>!!s) {
-            my ($enc) = "$1";
-
-            for my $field (qw(url length type)) {
-                if ($enc =~ m!$field=(['"])(.+?)\1!) {
-                    $entry{'enclosure'}->{ $field } = "$2";
-                }
-            }
+        if ($raw_entry =~ s!(<enclosure.+?/>)!!s) {
+            $entry{'enclosure'} = extract_attributes("$1", qw(url length type));
+        }
+        else {
+            $entry{'enclosure'} = {};
         }
 
         # Clean up author 
