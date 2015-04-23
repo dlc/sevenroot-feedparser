@@ -1,0 +1,14 @@
+lib/Sevenroot/FeedParser.pm
+lib/Sevenroot/FeedParser/Atom.pm
+lib/Sevenroot/FeedParser/RSS.pm
+lib/Sevenroot/FeedParser/Util.pm
+LICENSE
+Makefile.PL
+MANIFEST			This list of files
+MANIFEST.SKIP
+README.md
+t/skel
+t/stuff-you-missed-in-history-class.rss.t
+t/stuff-you-should-know.atom.t
+t/testdata/stuff-you-missed-in-history-class.rss
+t/testdata/stuff-you-should-know.atom
