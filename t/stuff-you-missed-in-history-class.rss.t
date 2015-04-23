@@ -20,3 +20,6 @@ ok($feed, "Parsed datafile correctly");
 is($feed->{'meta'}->{'namespaces'}->{'dc'},
    "http://purl.org/dc/elements/1.1/", 
    "Extract dc namespace");
+
+# TODO test category
+# TODO test multiple categories
