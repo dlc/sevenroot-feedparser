@@ -25,8 +25,8 @@ sub extract_namespaces {
     my %ns = map {
         my ($ns, $uri) = m!xmlns(:.+?)?=(.+)!;
         $uri =~ s/["']//g;
-        $ns =~ s/^://;
         $ns ||= '_';
+        $ns =~ s/^://;
         $ns => $uri;
     } grep /^xmlns/, split /\s+/, $root_elem;
 
