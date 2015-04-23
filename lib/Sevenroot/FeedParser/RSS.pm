@@ -38,8 +38,6 @@ sub extract_channel {
     my ($channel) = $$data =~ m!<channel>\s*(.+?)\s*<item!s;
 
     # Extract known fields, based on http://cyber.law.harvard.edu/rss/rss.html
-    # TODO category might appear multiple times
-    # TODO category might have a @domain attribute
     for my $field (qw(
         title link description
         language copyright webMaster managingEditor
@@ -51,7 +49,25 @@ sub extract_channel {
         }
     }
 
-    # TODO cloud field
+    $channel{'categories'} = [];
+    if ($channel =~ m!</category>!) {
+        while ($channel =~ s!<(category.*?</category)>!!s) {
+            my $cat = "$1";
+            my %cat = ();
+            ($cat{'text'}) = $cat =~ m!>(.+?)<!;
+            ($cat{'domain'}) = $cat =~ m!domain=.(.+)?.>!;
+
+            push @{ $channel{'categories'} }, \%cat;
+        }
+    }
+
+    if ($channel =~ s!(<cloud.+?/>)!!s) {
+        $channel{'cloud'} = extract_attributes("$1",
+            qw(domain port path registerProcedure protocol));
+    }
+    else {
+        $channel{'cloud'} = {};
+    }
 
     # Cleanup known fields
     if (my $image = delete $channel{'image'}) {
