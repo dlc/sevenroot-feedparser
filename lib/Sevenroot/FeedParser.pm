@@ -8,8 +8,6 @@ $VERSION = "0.01";
 $DEBUG = 0 unless defined $DEBUG;
 @EXPORT_OK = qw(parsefile parse parseurl);
 
-use Data::Dumper;
-
 # ----------------------------------------------------------------------
 # parsefile($filename)
 #
@@ -75,15 +73,6 @@ sub parse {
 
     return;
 }
-
-
-
-
-# ----------------------------------------------------------------------
-# _extract_feed_metadata(\$data)
-# 
-# Extract the feed-related data from an Atom feed
-# ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------
 # Emit debugging imformation, if required
