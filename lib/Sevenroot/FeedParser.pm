@@ -5,8 +5,8 @@ use vars qw($VERSION @EXPORT_OK $DEBUG);
 use base qw(Exporter);
 
 $VERSION = "0.01";
-$DEBUG = 1;
-@EXPORT_OK = qw(parsefile);
+$DEBUG = 1 unless defined $DEBUG;
+@EXPORT_OK = qw(parsefile parse);
 
 sub parsefile {
     my $filename = shift;
@@ -20,30 +20,35 @@ sub parsefile {
 
     return unless $data;
 
-    warn "\$data is ", length($data), " bytes\n"
-        if $DEBUG;
+    if ($DEBUG) {
+        warn "\$data is ", length($data), " bytes\n";
+        warn "head(\$data) = '", substr($data, 0, 100), "'...\n";
+    }
 
-    warn "head(\$data) = '", substr($data, 0, 100), "'\n"
-        if $DEBUG;
+    return parse($data);
+}
+
+sub parse {
+    my $data = shift;
 
     # Strip <?xml> tag
     $data =~ s!^\s*<\?xml[^>]+\?>\s*!!m;
 
-    return _parse_rss(\$data) if $data =~ /^<rss/;
-    return _parse_atom(\$data) if $data =~ /^<atom/;
+    return _parse_rss($data) if $data =~ /^<rss/;
+    return _parse_atom($data) if $data =~ /^<atom/;
 
     return;
 }
 
 sub _parse_rss {
     my $data = shift;
-    warn "Parsing data as rss: ", substr($$data, 0, 30), "\n"
+    warn "Parsing data as rss: ", substr($data, 0, 30), "...\n"
         if $DEBUG;
 }
 
 sub _parse_atom {
     my $data = shift;
-    warn "Parsing data as atom ", substr($$data, 0, 30), "\n"
+    warn "Parsing data as atom ", substr($data, 0, 30), "...\n"
         if $DEBUG;
 }
 
