@@ -4,18 +4,20 @@ use strict;
 use Sevenroot::FeedParser::Util;
 
 # ----------------------------------------------------------------------
-# parse(\$data)
+# parse(\$data, $source)
 #
 # Main entry point; currently returns a data structure.
 # ----------------------------------------------------------------------
 sub parse {
     my $class = shift;
     my $data = shift;
+    my $source = shift;
 
     my %feed = (meta => {}, channel => undef, entries => undef);
 
     $feed{'meta'}->{'type'} = 'RSS';
-    $feed{'meta'}->{'docs'} = 'http://cyber.law.harvard.edu/rss/rss.html';
+    $feed{'meta'}->{'docs'} = docs_link('rss');
+    $feed{'meta'}->{'source'} = $source;
     $feed{'meta'}->{'namespaces'} = extract_namespaces(\$data);
     $feed{'meta'}->{'xml_attrs'} = extract_xml_attrs(\$data);
     $feed{'channel'} = $class->extract_channel(\$data);

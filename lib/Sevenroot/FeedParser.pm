@@ -6,11 +6,15 @@ use base qw(Exporter);
 
 $VERSION = "0.01";
 $DEBUG = 0 unless defined $DEBUG;
-@EXPORT_OK = qw(parsefile parse);
+@EXPORT_OK = qw(parsefile parse parseurl);
 
 use Data::Dumper;
-use Sevenroot::FeedParser::RSS;
 
+# ----------------------------------------------------------------------
+# parsefile($filename)
+#
+# Parses $filename and returns a data structure
+# ----------------------------------------------------------------------
 sub parsefile {
     my $filename = shift;
 
@@ -23,11 +27,31 @@ sub parsefile {
 
     return unless $data;
 
-    return parse($data);
+    return parse($data, $filename);
 }
 
+# ----------------------------------------------------------------------
+# parseurl($url)
+#
+# Fetches $url, parses it, and returns a data structure
+# ----------------------------------------------------------------------
+sub parseurl {
+    my $url = shift;
+
+    require Sevenroot::HTTPClient;
+    return parse(
+        scalar Sevenroot::HTTPClient::get($url),
+        $url);
+}
+
+# ----------------------------------------------------------------------
+# parse($data)
+#
+# Parses $data and returns a data structure
+# ----------------------------------------------------------------------
 sub parse {
     my $data = shift;
+    my $source = shift || '<>';
 
     _debug("\$data is ", length($data), " bytes");
     _debug("head(\$data) = '", substr($data, 0, 100), "'...");
@@ -35,31 +59,21 @@ sub parse {
     # Strip <?xml> tag
     $data =~ s!^\s*<\?xml[^>]+\?>\s*!!m;
 
-    return _parse_rss($data) if $data =~ /^<rss/;
-    return _parse_atom($data) if $data =~ /^<feed/;
+    if ($data =~ /^<rss/) {
+        _debug("Parsing data as rss: ", substr($data, 0, 30), "...");
+
+        require Sevenroot::FeedParser::RSS;
+        return Sevenroot::FeedParser::RSS->parse($data, $source);
+    }
+
+    if ($data =~ /^<feed/) {
+        _debug("Parsing data as atom ", substr($data, 0, 30), "...");
+
+        require Sevenroot::FeedParser::Atom;
+        return Sevenroot::FeedParser::Atom->parse($data, $source);
+    }
 
     return;
-}
-
-sub _parse_rss {
-    my $data = shift;
-
-    _debug("Parsing data as rss: ", substr($data, 0, 30), "...");
-
-    return Sevenroot::FeedParser::RSS->parse($data);
-}
-
-sub _parse_atom {
-    my $data = shift;
-    my %feed = (meta => {}, channel => {}, entries => []);
-
-    _debug("Parsing data as atom ", substr($data, 0, 30), "...");
-
-    $feed{'meta'}->{'type'} = 'Atom';
-    $feed{'meta'}->{'namespaces'} = _extract_namespaces(\$data);
-    $feed{'meta'}->{'xml_attrs'} = _extract_xml_attrs(\$data);
-
-    return \%feed;
 }
 
 
