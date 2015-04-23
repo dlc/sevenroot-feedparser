@@ -13,6 +13,8 @@
             <url>http://www.example.com/images/logo.png</url>
             <link>http://www.example.com</link>
         </image>
+        <cloud domain="rpc.sys.com" port="80" path="/RPC2"
+              registerProcedure="myCloud.rssPleaseNotify" protocol="xml-rpc" />
 
         <item>
             <title>Test Entry #2</title>
