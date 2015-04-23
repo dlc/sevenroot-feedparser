@@ -6,6 +6,7 @@ use vars qw($RSS_DOCS_LINK $ATOM_DOCS_LINK);
 use base qw(Exporter);
 
 @EXPORT = qw(
+    extract_attributes
     extract_namespaces
     extract_xml_attrs
     extract_root_element
@@ -82,6 +83,45 @@ sub extract_email_address {
     $em =~ s/>$//;
 
     return $em;
+}
+
+# ----------------------------------------------------------------------
+# extract_attributes($str, @wanted_attrs)
+#
+# Extracts @wanted_attrs from $str.  If an attribute is not present in
+# $str, it is set to "" in the returned hash.
+# ----------------------------------------------------------------------
+sub extract_attributes {
+    my $str = shift;
+    my @attrs = @_;
+    my %attrs = ();
+    @attrs{ @attrs } = ("") x @attrs;
+
+    # Kill leading and trailing whitespace
+    $str =~ s/^\s*//;
+    $str =~ s/\s*$//;
+
+    # Kill xml cruft
+    $str =~ s/^<//;
+    $str =~ s/\/>$//;
+
+    # Tag name into _
+    my $tag;
+    if ($str =~ s/^([\w][\w\d:]+)//) {
+        $tag = "$1";
+    }
+
+    if ($tag) {
+        $str =~ s/<\/$tag>$//;
+    }
+
+    for my $attr (@attrs) {
+        if ($str =~ s!$attr=(['"])(.+?)\1!!) {
+            $attrs{ $attr } = "$2";
+        }
+    }
+
+    return \%attrs;
 }
 
 # ----------------------------------------------------------------------

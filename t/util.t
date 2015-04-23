@@ -5,8 +5,9 @@ use strict;
 use File::Spec::Functions qw(catfile);
 use File::Basename qw(basename);
 use FindBin qw($Bin);
-use Test::More tests => 9;
+use Test::More tests => 11;
 
+use_ok("Sevenroot::FeedParser::Util", qw(extract_attributes));
 use_ok("Sevenroot::FeedParser::Util", qw(extract_namespaces));
 use_ok("Sevenroot::FeedParser::Util", qw(extract_xml_attrs));
 use_ok("Sevenroot::FeedParser::Util", qw(extract_root_element));
@@ -30,3 +31,8 @@ my $xml = "<$root><baz/></rss>";
 is(extract_root_element(\$xml),
    $root,
    "extract root element");
+
+is_deeply(extract_attributes("<$root>", "foo"),
+          { foo => "bar" },
+          "extract attributes");
+   
