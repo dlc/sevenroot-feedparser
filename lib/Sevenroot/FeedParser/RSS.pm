@@ -100,6 +100,8 @@ sub extract_items {
         for my $field (qw(title link description comments guid pubDate author)) {
             if ($raw_entry =~ s!<$field>(.+?)</$field>!!s) {
                 ($entry{ $field }) = "$1";
+                $entry{ $field } =~ s/^\s*//;
+                $entry{ $field } =~ s/\s*$//;
             }
             else {
                 $entry{ $field } = "";
