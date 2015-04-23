@@ -9,6 +9,7 @@ use base qw(Exporter);
     extract_xml_attrs
     extract_root_element
     extract_email_address
+    docs_link
 );
 
 # ----------------------------------------------------------------------
@@ -79,5 +80,18 @@ sub extract_email_address {
     return $em;
 }
 
+# ----------------------------------------------------------------------
+# docs_link($feed_type)
+# 
+# Return a link to the docs for $feed_type.
+# ----------------------------------------------------------------------
+sub docs_link {
+    my $type = lc shift;
+
+    return 'http://cyber.law.harvard.edu/rss/rss.html' if 'rss' eq $type;
+    return 'http://atomenabled.org/' if 'atom' eq $type;
+
+    return;
+}
 
 1;
