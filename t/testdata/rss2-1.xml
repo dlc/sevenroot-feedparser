@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss xmlns:content='http://purl.org/rss/1.0/modules/content/' xmlns:taxo='http://purl.org/rss/1.0/modules/taxonomy/' xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#' xmlns:itunes='http://www.itunes.com/dtds/podcast-1.0.dtd' xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom='http://www.w3.org/2005/Atom' version='2.0'>
+    <channel>
+        <title>Sample RSS 2.0 Feed</title>
+        <link>http://www.example.com</link>
+        <description>This sample feed provides some basic features of an RSS 2.0 feed.</description>
+        <language>en-us</language>
+        <lastBuildDate>Wed, 22 Apr 2015 11:29:48 -0400</lastBuildDate>
+        <webMaster>webmaster@example.com (I like trains)</webMaster>
+        <ttl>300</ttl>
+        <category>Society &amp; Culture: History</category>
+        <image>
+            <url>http://www.example.com/images/logo.png</url>
+            <link>http://www.example.com</link>
+        </image>
+
+        <item>
+            <title>Test Entry #2</title>
+            <link>http://www.example.com/articles/2.html</link>
+            <description>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ultrices tellus nulla, ut rutrum risus commodo sed. Ut sit amet orci consequat, bibendum magna ut, tincidunt nisl. Sed scelerisque ante sagittis nunc consequat, nec mattis quam aliquet. Sed rutrum rhoncus arcu sit amet finibus. Aenean consequat, enim eu facilisis molestie, neque elit lobortis leo, a sodales diam diam ac erat. Vestibulum convallis mi enim, in pulvinar mi commodo consectetur. Nunc aliquet nibh metus, eu tincidunt sem sollicitudin ac. Praesent interdum, orci quis efficitur egestas, orci elit iaculis dui, eu posuere nisl est sit amet lectus. Aenean sit amet eros quis tellus rutrum posuere non sed tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut faucibus faucibus nisl. Proin in enim ut massa maximus auctor ut quis diam. Etiam dignissim, velit id venenatis convallis, nibh purus mollis odio, gravida aliquet arcu arcu vel tellus. Vivamus ultrices fringilla ex, id laoreet quam porta vel. Cras porttitor vel mauris nec efficitur.
+            </description>
+            <pubDate>Wed, 22 Apr 2015 11:26:18 -0400</pubDate>
+            <guid>http://www.example.com/articles/2.html</guid>
+        </item>
+          <item>
+            <title>Test Entry #1</title>
+            <link>http://www.example.com/articles/1.html</link>
+            <description>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec at blandit magna. Ut et gravida lacus. Donec bibendum eleifend iaculis. Nulla placerat arcu et dui lobortis auctor. Aliquam vel risus nisi. Donec luctus convallis rutrum. In tincidunt urna et leo accumsan, vitae rhoncus massa dapibus. Duis at faucibus tortor. In at urna quis lectus tincidunt lacinia nec sit amet nulla.</description>
+            <pubDate>Wed, 20 Apr 2015 15:45:16 -0400</pubDate>
+            <guid>http://www.example.com/articles/1.html</guid>
+        <item>
+        </item>
+    </channel>
+</rss>
