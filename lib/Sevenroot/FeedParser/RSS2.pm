@@ -45,7 +45,10 @@ sub extract_channel {
         ttl image rating textInput skipHours skipDays
     )) {
         if ($channel =~ s!<$field>(.+?)</$field>!!s) {
-            ($channel{ lc $field }) = unescape("$1");
+            ($channel{ lc $field }) = unescape(trim("$1"));
+        }
+        else {
+            $channel{ lc $field } = "";
         }
     }
 
@@ -74,7 +77,7 @@ sub extract_channel {
         my $i = $channel{'image'} = {};
         for my $field (qw(title url link)) {
             if ($image =~ m!<$field>(.+?)</$field>!) {
-                $i->{ $field } = unescape("$1");
+                $i->{ $field } = unescape(trim("$1"));
             }
         }
     }
@@ -83,7 +86,7 @@ sub extract_channel {
         my $i = $channel{'textinput'} = {};
         for my $field (qw(title desciption name link)) {
             if ($image =~ m!<$field>(.+?)</$field>!) {
-                $i->{ $field } = unescape("$1");
+                $i->{ $field } = unescape(trim("$1"));
             }
         }
     }
@@ -97,6 +100,13 @@ sub extract_channel {
     for my $date_field (qw(pubdate lastbuilddate)) {
         if (my $date_str = delete $channel{$date_field}) {
             $channel{ lc $date_field } = normalize_date($date_str);
+        }
+    }
+
+    # Other well-known, common fields
+    for my $field (qw(dc:creator)) {
+        if ($channel =~ s!<$field>(.+?)</$field>!!s) {
+            ($channel{ lc $field }) = unescape(trim("$1"));
         }
     }
 
@@ -124,7 +134,7 @@ sub extract_items {
                 ($entry{ lc $field }) = unescape(trim("$1"));
             }
             else {
-                $entry{ $field } = "";
+                $entry{ lc $field } = "";
             }
         }
 
@@ -172,8 +182,16 @@ sub extract_items {
             $entry{'author'} = extract_email_address($str);
         }
 
+        # Parse date into epoch
         if (my $date_str = delete $entry{'pubdate'}) {
             $entry{'pubdate'} = normalize_date($date_str);
+        }
+
+        # Other common fields
+        for my $field (qw(wfw:commentRss slash:comments dc:creator)) {
+            if ($raw_entry =~ s!<$field>(.+?)</$field>!!s) {
+                ($entry{ lc $field }) = unescape(trim("$1"));
+            }
         }
 
         push @entries, \%entry;
