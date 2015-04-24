@@ -1,0 +1,16 @@
+#!/bin/sh
+
+VER=`grep VERSION Makefile.PL | awk '{ print $NF }' | sed -e 's/"//g' -e "s/'//g" -e 's/,//g'`
+
+echo 'Updating $VERSION to '"$VER: "
+echo
+
+find . \( -name \*.pm -o -name \*.pod \) -print -exec \
+    sed -i -e 's/^\(\$VERSION = "\)[^"]*\(";\)$/\1'$VER'\2/' {} \;
+
+echo 'Done'
+echo
+echo 'Status:'
+
+svn status `find . \( -name \*.pm -o -name \*.pod \) -print`
+echo
