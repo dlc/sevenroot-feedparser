@@ -2,11 +2,13 @@
 
 VER=`grep VERSION Makefile.PL | awk '{ print $NF }' | sed -e 's/"//g' -e "s/'//g" -e 's/,//g'`
 
-echo 'Updating $VERSION to '"$VER: "
-echo
+echo -n 'Updating $VERSION to '"$VER..."
 
-find . \( -name \*.pm -o -name \*.pod \) -print -exec \
+find . -name \*.pm -exec \
     sed -i -e 's/^\(\$VERSION = "\)[^"]*\(";\)$/\1'$VER'\2/' {} \;
+
+find . \( -name \*.pod -o -name \*.pm \) -exec \
+    sed -i -e 's/^\(This document describes C<Sevenroot::FeedParser> version \).*/\1'"$VER"'./' {} \;
 
 echo 'Done'
 echo
