@@ -2,19 +2,20 @@ package Sevenroot::FeedParser::Util;
 
 use strict;
 use vars qw(@EXPORT);
-use vars qw($RSS_DOCS_LINK $ATOM_DOCS_LINK);
+use vars qw($RSS2_DOCS_LINK $ATOM_DOCS_LINK);
 use base qw(Exporter);
 
 @EXPORT = qw(
-    extract_attributes
-    extract_namespaces
-    extract_xml_attrs
-    extract_root_element
-    extract_email_address
     docs_link
+    extract_attributes
+    extract_email_address
+    extract_namespaces
+    extract_root_element
+    extract_xml_attrs
+    select_feed_class
 );
 
-$RSS_DOCS_LINK = 'http://cyber.law.harvard.edu/rss/rss.html';
+$RSS2_DOCS_LINK = 'http://cyber.law.harvard.edu/rss/rss.html';
 $ATOM_DOCS_LINK = 'http://atomenabled.org/';
 
 # ----------------------------------------------------------------------
@@ -26,18 +27,19 @@ $ATOM_DOCS_LINK = 'http://atomenabled.org/';
 sub extract_namespaces {
     my $data = shift;
     my $root_elem = extract_root_element($data);
+    my $attrs = extract_attributes($root_elem);
+    my %ns;
 
-    my %ns = map {
-        my ($ns, $uri) = m!xmlns(:.+?)?=(.+)!;
-        $uri =~ s/["']//g;
-        $ns ||= '_';
-        $ns =~ s/^://;
-        $ns => $uri;
-    } grep /^xmlns/, split /\s+/, $root_elem;
+    for my $ns (keys %$attrs) {
+        if ($ns =~ /^xmlns/) {
+           (my $short = $ns) =~ s/^xmlns:?//;
+            $short ||= '_';
+            $ns{ $short } = $attrs->{ $ns };
+        }
+    }
 
     return \%ns;
 }
-
 
 # ----------------------------------------------------------------------
 # extract_xml_attrs(\$data)
@@ -47,14 +49,16 @@ sub extract_namespaces {
 sub extract_xml_attrs {
     my $data = shift;
     my $root_elem = extract_root_element($data);
+    my $attrs = extract_attributes($root_elem);
+    my %xml;
 
-    my %attrs = map {
-        my ($attr, $uri) = m!xml:(.+?)=(.+)!;
-        $uri =~ s/["']//g;
-        $attr => $uri;
-    } grep /^xml:/, split /\s+/, $root_elem;
+    for my $att (keys %$attrs) {
+        if ($att =~ s/xml://) {
+            $xml{ $att } = $attrs->{ "xml:$att" };
+        }
+    }
 
-    return \%attrs;
+    return \%xml;
 }
 
 # ----------------------------------------------------------------------
@@ -93,8 +97,16 @@ sub extract_email_address {
 # ----------------------------------------------------------------------
 sub extract_attributes {
     my $str = shift;
-    my @attrs = @_;
     my %attrs = ();
+    my @attrs;
+
+    if (@_) {
+        @attrs = @_;
+    }
+    else {
+        @attrs = $str =~ /([\w:]+)=/g;
+    }
+
     @attrs{ @attrs } = ("") x @attrs;
 
     # Kill leading and trailing whitespace
@@ -105,7 +117,6 @@ sub extract_attributes {
     $str =~ s/^<//;
     $str =~ s/\/>$//;
 
-    # Tag name into _
     my $tag;
     if ($str =~ s/^([\w][\w\d:]+)//) {
         $tag = "$1";
@@ -134,10 +145,30 @@ sub extract_attributes {
 sub docs_link {
     my $type = lc shift;
 
-    return $RSS_DOCS_LINK if 'rss' eq $type;
+    return $RSS2_DOCS_LINK if 'rss' eq $type;
+    return $RSS2_DOCS_LINK if 'rss2' eq $type;
     return $ATOM_DOCS_LINK if 'atom' eq $type;
 
     return;
+}
+
+# ----------------------------------------------------------------------
+# feed_version($feed_string)
+# Given a feed (sub)string, return a class to implement it
+# ----------------------------------------------------------------------
+sub select_feed_class {
+    my $feed_string = shift;
+
+    if ($feed_string =~ /^<rss/) {
+        require Sevenroot::FeedParser::RSS2;
+        return "Sevenroot::FeedParser::RSS2";
+    }
+
+    if ($feed_string =~ /^<feed/) {
+        require Sevenroot::FeedParser::Atom;
+        return "Sevenroot::FeedParser::Atom";
+    }
+
 }
 
 1;
