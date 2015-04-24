@@ -4,7 +4,7 @@ use strict;
 use vars qw($VERSION @EXPORT_OK $DEBUG);
 use base qw(Exporter);
 
-$VERSION = "0.01";
+$VERSION = "0.2";
 $DEBUG = 0 unless defined $DEBUG;
 @EXPORT_OK = qw(parsefile parse parseurl);
 
