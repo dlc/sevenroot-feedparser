@@ -8,6 +8,8 @@ $VERSION = "0.01";
 $DEBUG = 0 unless defined $DEBUG;
 @EXPORT_OK = qw(parsefile parse parseurl);
 
+use Sevenroot::FeedParser::Util qw(select_feed_class);
+
 # ----------------------------------------------------------------------
 # parsefile($filename)
 #
@@ -60,18 +62,9 @@ sub parse {
     # Strip leading whitespace
     $data =~ s/^\s*//;
 
-    if ($data =~ /^<rss/) {
-        _debug("Parsing data as rss: ", substr($data, 0, 30), "...");
-
-        require Sevenroot::FeedParser::RSS;
-        return Sevenroot::FeedParser::RSS->parse($data, $source);
-    }
-
-    if ($data =~ /^<feed/) {
-        _debug("Parsing data as atom ", substr($data, 0, 30), "...");
-
-        require Sevenroot::FeedParser::Atom;
-        return Sevenroot::FeedParser::Atom->parse($data, $source);
+    if (my $class = select_feed_class(substr($data, 0, 1024))) {
+        _debug("Using $class to parse $source");
+        return $class->parse($data, $source);
     }
 
     return;
