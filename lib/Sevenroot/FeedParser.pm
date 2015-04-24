@@ -156,3 +156,7 @@ present, and will always be a hashref, hashref, and arrayref,
 respectively. Each element in the C<entries> array will be a
 hashref.  C<meta> refers to attributes of the feed itself, and not
 of the data, like xml properties (language) and xml namespaces.
+
+=head1 VERSION
+
+This document describes C<Sevenroot::FeedParser> version 0.2b.
