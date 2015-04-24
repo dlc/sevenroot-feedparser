@@ -45,7 +45,7 @@ sub extract_channel {
         ttl image rating textInput skipHours skipDays
     )) {
         if ($channel =~ s!<$field>(.+?)</$field>!!s) {
-            ($channel{ $field }) = "$1";
+            ($channel{ lc $field }) = "$1";
         }
     }
 
@@ -79,7 +79,7 @@ sub extract_channel {
         }
     }
 
-    if (my $image = delete $channel{'textInput'}) {
+    if (my $image = delete $channel{'textinput'}) {
         my $i = $channel{'textinput'} = {};
         for my $field (qw(title desciption name link)) {
             if ($image =~ m!<$field>(.+?)</$field>!) {
@@ -88,13 +88,13 @@ sub extract_channel {
         }
     }
 
-    for my $person (qw(webMaster managingEditor)) {
+    for my $person (qw(webmaster managingeditor)) {
         if (my $str = delete $channel{$person}) {
             $channel{ lc $person } = extract_email_address($str);
         }
     }
 
-    for my $date_field (qw(pubDate lastBuildDate)) {
+    for my $date_field (qw(pubdate lastbuilddate)) {
         if (my $date_str = delete $channel{$date_field}) {
             $channel{ lc $date_field } = normalize_date($date_str);
         }
@@ -121,7 +121,7 @@ sub extract_items {
         # Simple scalar fields
         for my $field (qw(title link description comments guid pubDate author)) {
             if ($raw_entry =~ s!<$field>(.+?)</$field>!!s) {
-                ($entry{ $field }) = trim("$1");
+                ($entry{ lc $field }) = trim("$1");
             }
             else {
                 $entry{ $field } = "";
@@ -162,7 +162,7 @@ sub extract_items {
             $entry{'author'} = extract_email_address($str);
         }
 
-        if (my $date_str = delete $entry{'pubDate'}) {
+        if (my $date_str = delete $entry{'pubdate'}) {
             $entry{'pubdate'} = normalize_date($date_str);
         }
 

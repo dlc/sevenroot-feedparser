@@ -131,9 +131,7 @@ sub extract_attributes {
 
     for my $attr (@attrs) {
         if ($str =~ s!$attr=(['"])(.+?)\1!!) {
-            $attrs{ $attr } = "$2";
-            $attrs{ $attr } =~ s/^\s*//;
-            $attrs{ $attr } =~ s/\s*$//;
+            $attrs{ lc $attr } = trim("$2");
         }
     }
 
