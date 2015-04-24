@@ -5,7 +5,7 @@ use strict;
 use File::Spec::Functions qw(catfile);
 use File::Basename qw(basename);
 use FindBin qw($Bin);
-use Test::More tests => 20;
+use Test::More tests => 21;
 
 use_ok("Sevenroot::FeedParser::Util", qw(docs_link));
 use_ok("Sevenroot::FeedParser::Util", qw(extract_attributes));
