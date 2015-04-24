@@ -222,6 +222,7 @@ sub unescape {
         $$str =~ s/^<!\[CDATA\[//;
         $$str =~ s/\]\]>$//;
         $$str =~ s/&lt;/</g;
+        $$str =~ s/&#60;/</g;
         $$str =~ s/&gt;/>/g;
         $$str =~ s/&quot;/"/g;
         $$str =~ s/&apos;/'/g;
@@ -232,6 +233,7 @@ sub unescape {
         $str =~ s/^<!\[CDATA\[//;
         $str =~ s/\]\]>$//;
         $str =~ s/&lt;/</g;
+        $str =~ s/&#60;/</g;
         $str =~ s/&gt;/>/g;
         $str =~ s/&quot;/"/g;
         $str =~ s/&apos;/'/g;
