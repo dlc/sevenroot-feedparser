@@ -15,6 +15,7 @@ use base qw(Exporter);
     normalize_date
     select_feed_class
     trim
+    unescape
 );
 
 $RSS2_DOCS_LINK = 'http://cyber.law.harvard.edu/rss/rss.html';
@@ -38,7 +39,7 @@ sub extract_namespaces {
         if ($ns =~ /^xmlns/) {
            (my $short = $ns) =~ s/^xmlns:?//;
             $short ||= '_';
-            $ns{ $short } = $attrs->{ $ns };
+            $ns{ $short } = unescape($attrs->{ $ns });
         }
     }
 
@@ -58,7 +59,7 @@ sub extract_xml_attrs {
 
     for my $att (keys %$attrs) {
         if ($att =~ s/xml://) {
-            $xml{ $att } = $attrs->{ "xml:$att" };
+            $xml{ $att } = unescape($attrs->{ "xml:$att" });
         }
     }
 
@@ -131,7 +132,7 @@ sub extract_attributes {
 
     for my $attr (@attrs) {
         if ($str =~ s!$attr=(['"])(.+?)\1!!) {
-            $attrs{ lc $attr } = trim("$2");
+            $attrs{ lc $attr } = unescape(trim("$2"));
         }
     }
 
@@ -193,7 +194,7 @@ sub select_feed_class {
 # Trims leading and trailing whitespace
 # ----------------------------------------------------------------------
 sub trim {
-    my $str = shift;
+    my $str = shift || return;
 
     if (ref $str) {
         $$str =~ s/^\s*//;
@@ -206,6 +207,29 @@ sub trim {
     }
 
     return $str;
+}
+
+sub unescape {
+    my $str = shift || return;
+
+    if (ref $str) {
+        $$str =~ s/&lt;/</g;
+        $$str =~ s/&gt;/>/g;
+        $$str =~ s/&quot;/"/g;
+        $$str =~ s/&apos;/'/g;
+        $$str =~ s/&amp;/&/g;
+    }
+
+    else {
+        $str =~ s/&lt;/</g;
+        $str =~ s/&gt;/>/g;
+        $str =~ s/&quot;/"/g;
+        $str =~ s/&apos;/'/g;
+        $str =~ s/&amp;/&/g;
+    }
+
+    return $str;
+
 }
 
 1;

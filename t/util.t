@@ -5,7 +5,7 @@ use strict;
 use File::Spec::Functions qw(catfile);
 use File::Basename qw(basename);
 use FindBin qw($Bin);
-use Test::More tests => 25;
+use Test::More tests => 27;
 
 use_ok("Sevenroot::FeedParser::Util", qw(docs_link));
 use_ok("Sevenroot::FeedParser::Util", qw(extract_attributes));
@@ -16,6 +16,7 @@ use_ok("Sevenroot::FeedParser::Util", qw(extract_xml_attrs));
 use_ok("Sevenroot::FeedParser::Util", qw(normalize_date));
 use_ok("Sevenroot::FeedParser::Util", qw(select_feed_class));
 use_ok("Sevenroot::FeedParser::Util", qw(trim));
+use_ok("Sevenroot::FeedParser::Util", qw(unescape));
 
 is(docs_link('RSS'),
    'http://cyber.law.harvard.edu/rss/rss.html',
@@ -85,3 +86,6 @@ is($epoch, 1429716378, "Normalize date does the right thing.");
 
 my $str = "  I like cake     ";
 is(trim($str), "I like cake", "trim works");
+
+$str = "&lt;hello&gt;";
+is(unescape($str), "<hello>", "unescape works");

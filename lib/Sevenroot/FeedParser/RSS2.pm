@@ -45,7 +45,7 @@ sub extract_channel {
         ttl image rating textInput skipHours skipDays
     )) {
         if ($channel =~ s!<$field>(.+?)</$field>!!s) {
-            ($channel{ lc $field }) = "$1";
+            ($channel{ lc $field }) = unescape("$1");
         }
     }
 
@@ -54,8 +54,8 @@ sub extract_channel {
         while ($channel =~ s!<(category.*?</category)>!!s) {
             my $cat = "$1";
             my %cat = ();
-            ($cat{'text'}) = trim($cat =~ m!>(.+?)<!);
-            ($cat{'domain'}) = trim($cat =~ m!domain=.(.+)?.>!);
+            ($cat{'text'}) = unescape(trim($cat =~ m!>(.+?)<!));
+            ($cat{'domain'}) = unescape(trim($cat =~ m!domain=.(.+)?.>!));
 
             push @{ $channel{'categories'} }, \%cat;
         }
@@ -74,7 +74,7 @@ sub extract_channel {
         my $i = $channel{'image'} = {};
         for my $field (qw(title url link)) {
             if ($image =~ m!<$field>(.+?)</$field>!) {
-                $i->{ $field } = "$1";
+                $i->{ $field } = unescape("$1");
             }
         }
     }
@@ -83,7 +83,7 @@ sub extract_channel {
         my $i = $channel{'textinput'} = {};
         for my $field (qw(title desciption name link)) {
             if ($image =~ m!<$field>(.+?)</$field>!) {
-                $i->{ $field } = "$1";
+                $i->{ $field } = unescape("$1");
             }
         }
     }
@@ -121,7 +121,7 @@ sub extract_items {
         # Simple scalar fields
         for my $field (qw(title link description comments guid pubDate author)) {
             if ($raw_entry =~ s!<$field>(.+?)</$field>!!s) {
-                ($entry{ lc $field }) = trim("$1");
+                ($entry{ lc $field }) = unescape(trim("$1"));
             }
             else {
                 $entry{ $field } = "";
@@ -134,8 +134,8 @@ sub extract_items {
             while ($raw_entry =~ s!<(category.*?</category)>!!s) {
                 my $cat = "$1";
                 my %cat = ();
-                ($cat{'text'}) = $cat =~ m!>(.+?)<!;
-                ($cat{'domain'}) = $cat =~ m!domain=.(.+)?.>!;
+                ($cat{'text'}) = unescape(trim($cat =~ m!>(.+?)<!));
+                ($cat{'domain'}) = unescape(trim($cat =~ m!domain=.(.+)?.>!));
 
                 push @{ $entry{'categories'} }, \%cat;
             }
@@ -145,8 +145,8 @@ sub extract_items {
         $entry{'source'} = {};
         if ($raw_entry =~ m!</source>!) {
             my ($source) = $raw_entry =~ s!<(source.+?</source)>!!;
-            ($entry{'source'}->{'title'}) = $source =~ m!>(.+)<!;
-            ($entry{'source'}->{'url'}) = $source =~ m! url=.(.+).>!;
+            ($entry{'source'}->{'title'}) = unescape(trim($source =~ m!>(.+)<!));
+            ($entry{'source'}->{'url'}) = unescape(trim($source =~ m! url=.(.+).>!));
         }
 
         # enclosure is a single tag with attributes
