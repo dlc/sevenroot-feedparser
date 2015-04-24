@@ -87,9 +87,10 @@ sub extract_email_address {
     my $str = shift;
     my $em = "";
 
-   ($em) = $str =~ /(\S+@\S+)/;
-    $em =~ s/^<//;
-    $em =~ s/>$//;
+    if (($em) = $str =~ /(\S+@\S+)/) {
+        $em =~ s/^<//;
+        $em =~ s/>$//;
+    }
 
     return $em;
 }
