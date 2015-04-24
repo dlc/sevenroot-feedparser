@@ -1,0 +1,63 @@
+<rss version="2.0">
+  <channel>
+    <title>APOD</title>
+    <link>http://antwrp.gsfc.nasa.gov/</link>
+    <description>Astronomy Picture of the Day</description>
+    <language>en-us</language>
+    <image>
+      <title>APOD</title>
+      <url>http://antwrp.gsfc.nasa.gov/favicon.ico</url>
+      <link>http://antwrp.gsfc.nasa.gov/</link>
+    </image>
+
+    <item>
+    <title>Blue Tears and the Milky Way</title>
+    <link>http://antwrp.gsfc.nasa.gov/apod/astropix.html</link>
+<description>&#60;p>&#60;a href="http://antwrp.gsfc.nasa.gov/apod/astropix.html">&#60;img src="http://antwrp.gsfc.nasa.gov/apod/calendar/S_150424.jpg" align="left" alt="Lapping at rocks" border="0" />&#60;/a> Lapping at rocks&#60;/p>&#60;br clear="all"/></description>
+    </item>
+
+    <item>
+    <title>Meteor in the Milky Way</title>
+    <link>http://antwrp.gsfc.nasa.gov/apod/ap150423.html</link>
+<description>&#60;p>&#60;a href="http://antwrp.gsfc.nasa.gov/apod/ap150423.html">&#60;img src="http://antwrp.gsfc.nasa.gov/apod/calendar/S_150423.jpg" align="left" alt="Meteor in the Milky Way" border="0" />&#60;/a> Meteor in the Milky Way&#60;/p>&#60;br clear="all"/></description>
+    </item>
+
+    <item>
+    <title>Colorful Star Clouds in Cygnus </title>
+    <link>http://antwrp.gsfc.nasa.gov/apod/ap150422.html</link>
+<description>&#60;p>&#60;a href="http://antwrp.gsfc.nasa.gov/apod/ap150422.html">&#60;img src="http://antwrp.gsfc.nasa.gov/apod/calendar/S_150422.jpg" align="left" alt="Stars can form in colorful surroundings. " border="0" />&#60;/a> Stars can form in colorful surroundings. &#60;/p>&#60;br clear="all"/></description>
+    </item>
+
+    <item>
+    <title>Vesta Trek: A Digital Model of Asteroid Vesta</title>
+    <link>http://antwrp.gsfc.nasa.gov/apod/ap150421.html</link>
+<description>&#60;p>&#60;a href="http://antwrp.gsfc.nasa.gov/apod/ap150421.html">&#60;img src="http://antwrp.gsfc.nasa.gov/apod/calendar/S_150421.jpg" align="left" alt="You can explore asteroid Vesta." border="0" />&#60;/a> You can explore asteroid Vesta.&#60;/p>&#60;br clear="all"/></description>
+    </item>
+
+    <item>
+    <title>Total Solar Eclipse over Svalbard   </title>
+    <link>http://antwrp.gsfc.nasa.gov/apod/ap150420.html</link>
+<description>&#60;p>&#60;a href="http://antwrp.gsfc.nasa.gov/apod/ap150420.html">&#60;img src="http://antwrp.gsfc.nasa.gov/apod/calendar/S_150420.jpg" align="left" alt="Going, going, gone. " border="0" />&#60;/a> Going, going, gone. &#60;/p>&#60;br clear="all"/></description>
+    </item>
+
+    <item>
+    <title>Ring Galaxy AM 0644 741 from Hubble   </title>
+    <link>http://antwrp.gsfc.nasa.gov/apod/ap150419.html</link>
+<description>&#60;p>&#60;a href="http://antwrp.gsfc.nasa.gov/apod/ap150419.html">&#60;img src="http://antwrp.gsfc.nasa.gov/apod/calendar/S_150419.jpg" align="left" alt="How could a galaxy become shaped like a ring?  The rim of the blue galaxy " border="0" />&#60;/a> How could a galaxy become shaped like a ring?  The rim of the blue galaxy &#60;/p>&#60;br clear="all"/></description>
+    </item>
+
+    <item>
+    <title>The Great Crater Hokusai</title>
+    <link>http://antwrp.gsfc.nasa.gov/apod/ap150418.html</link>
+<description>&#60;p>&#60;a href="http://antwrp.gsfc.nasa.gov/apod/ap150418.html">&#60;img src="http://antwrp.gsfc.nasa.gov/apod/calendar/S_150418.jpg" align="left" alt="One of the largest young craters on Mercury," border="0" />&#60;/a> One of the largest young craters on Mercury,&#60;/p>&#60;br clear="all"/></description>
+    </item>
+
+    <textInput>
+    <title>Search APOD</title>
+    <description>Search APOD</description>
+    <name>query</name>
+    <link>http://antwrp.gsfc.nasa.gov/cgi-bin/apod/apod_search
+    </link>
+    </textInput>
+  </channel>
+</rss>
