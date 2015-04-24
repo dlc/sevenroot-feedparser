@@ -94,6 +94,12 @@ sub extract_channel {
         }
     }
 
+    for my $date_field (qw(pubDate lastBuildDate)) {
+        if (my $date_str = delete $channel{$date_field}) {
+            $channel{ lc $date_field } = normalize_date($date_str);
+        }
+    }
+
     return \%channel;
 }
 
@@ -156,6 +162,10 @@ sub extract_items {
         # Clean up author 
         if (my $str = delete $entry{'author'}) {
             $entry{'author'} = extract_email_address($str);
+        }
+
+        if (my $date_str = delete $entry{'pubDate'}) {
+            $entry{'pubdate'} = normalize_date($date_str);
         }
 
         push @entries, \%entry;

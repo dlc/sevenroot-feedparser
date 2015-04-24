@@ -12,11 +12,14 @@ use base qw(Exporter);
     extract_namespaces
     extract_root_element
     extract_xml_attrs
+    normalize_date
     select_feed_class
 );
 
 $RSS2_DOCS_LINK = 'http://cyber.law.harvard.edu/rss/rss.html';
 $ATOM_DOCS_LINK = 'http://atomenabled.org/';
+
+use Time::ParseDate qw(parsedate);
 
 # ----------------------------------------------------------------------
 # extract_namespaces(\$data)
@@ -150,6 +153,19 @@ sub docs_link {
     return $ATOM_DOCS_LINK if 'atom' eq $type;
 
     return;
+}
+
+# ----------------------------------------------------------------------
+# normalize_date($date_str)
+#
+# Turns $date_str into a epoch.
+# ----------------------------------------------------------------------
+sub normalize_date {
+    my $date_str = shift;
+
+    my $epoch = parsedate($date_str);
+
+    return $epoch;
 }
 
 # ----------------------------------------------------------------------

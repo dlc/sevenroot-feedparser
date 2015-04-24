@@ -5,7 +5,7 @@ use strict;
 use File::Spec::Functions qw(catfile);
 use File::Basename qw(basename);
 use FindBin qw($Bin);
-use Test::More tests => 21;
+use Test::More tests => 23;
 
 use_ok("Sevenroot::FeedParser::Util", qw(docs_link));
 use_ok("Sevenroot::FeedParser::Util", qw(extract_attributes));
@@ -13,6 +13,7 @@ use_ok("Sevenroot::FeedParser::Util", qw(extract_email_address));
 use_ok("Sevenroot::FeedParser::Util", qw(extract_namespaces));
 use_ok("Sevenroot::FeedParser::Util", qw(extract_root_element));
 use_ok("Sevenroot::FeedParser::Util", qw(extract_xml_attrs));
+use_ok("Sevenroot::FeedParser::Util", qw(normalize_date));
 use_ok("Sevenroot::FeedParser::Util", qw(select_feed_class));
 
 is(docs_link('RSS'),
@@ -78,3 +79,5 @@ my $xml_attrs = extract_xml_attrs(\q(<feed
 is($xml_attrs->{'lang'}, "en-US", "XML attrs (lang)");
 is($xml_attrs->{'base'}, "http://www.example.com/", "XML attrs (base)");
 
+my $epoch = normalize_date("Wed, 22 Apr 2015 11:26:18 -0400");
+is($epoch, 1429716378, "Normalize date does the right thing.");
