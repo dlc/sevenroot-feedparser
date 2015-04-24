@@ -1,4 +1,4 @@
-package Sevenroot::FeedParser::RSS;
+package Sevenroot::FeedParser::RSS2;
 
 use strict;
 use Sevenroot::FeedParser::Util;

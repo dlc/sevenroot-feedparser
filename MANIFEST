@@ -1,6 +1,6 @@
 lib/Sevenroot/FeedParser.pm
 lib/Sevenroot/FeedParser/Atom.pm
-lib/Sevenroot/FeedParser/RSS.pm
+lib/Sevenroot/FeedParser/RSS2.pm
 lib/Sevenroot/FeedParser/Util.pm
 LICENSE
 Makefile.PL
