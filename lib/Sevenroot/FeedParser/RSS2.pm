@@ -54,8 +54,8 @@ sub extract_channel {
         while ($channel =~ s!<(category.*?</category)>!!s) {
             my $cat = "$1";
             my %cat = ();
-            ($cat{'text'}) = $cat =~ m!>(.+?)<!;
-            ($cat{'domain'}) = $cat =~ m!domain=.(.+)?.>!;
+            ($cat{'text'}) = trim($cat =~ m!>(.+?)<!);
+            ($cat{'domain'}) = trim($cat =~ m!domain=.(.+)?.>!);
 
             push @{ $channel{'categories'} }, \%cat;
         }
@@ -121,9 +121,7 @@ sub extract_items {
         # Simple scalar fields
         for my $field (qw(title link description comments guid pubDate author)) {
             if ($raw_entry =~ s!<$field>(.+?)</$field>!!s) {
-                ($entry{ $field }) = "$1";
-                $entry{ $field } =~ s/^\s*//;
-                $entry{ $field } =~ s/\s*$//;
+                ($entry{ $field }) = trim("$1");
             }
             else {
                 $entry{ $field } = "";

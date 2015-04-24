@@ -14,6 +14,7 @@ use base qw(Exporter);
     extract_xml_attrs
     normalize_date
     select_feed_class
+    trim
 );
 
 $RSS2_DOCS_LINK = 'http://cyber.law.harvard.edu/rss/rss.html';
@@ -113,8 +114,7 @@ sub extract_attributes {
     @attrs{ @attrs } = ("") x @attrs;
 
     # Kill leading and trailing whitespace
-    $str =~ s/^\s*//;
-    $str =~ s/\s*$//;
+    trim(\$str);
 
     # Kill xml cruft
     $str =~ s/^<//;
@@ -170,6 +170,7 @@ sub normalize_date {
 
 # ----------------------------------------------------------------------
 # feed_version($feed_string)
+#
 # Given a feed (sub)string, return a class to implement it
 # ----------------------------------------------------------------------
 sub select_feed_class {
@@ -185,6 +186,28 @@ sub select_feed_class {
         return "Sevenroot::FeedParser::Atom";
     }
 
+    return;
+}
+
+# ----------------------------------------------------------------------
+# trim($str)
+# 
+# Trims leading and trailing whitespace
+# ----------------------------------------------------------------------
+sub trim {
+    my $str = shift;
+
+    if (ref $str) {
+        $$str =~ s/^\s*//;
+        $$str =~ s/\s*$//;
+    }
+
+    else {
+        $str =~ s/^\s*//;
+        $str =~ s/\s*$//;
+    }
+
+    return $str;
 }
 
 1;

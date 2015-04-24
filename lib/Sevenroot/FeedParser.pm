@@ -8,7 +8,7 @@ $VERSION = "0.01";
 $DEBUG = 0 unless defined $DEBUG;
 @EXPORT_OK = qw(parsefile parse parseurl);
 
-use Sevenroot::FeedParser::Util qw(select_feed_class);
+use Sevenroot::FeedParser::Util;
 
 # ----------------------------------------------------------------------
 # parsefile($filename)
@@ -60,7 +60,7 @@ sub parse {
     $data =~ s!<\?.+?\?>!!g;
 
     # Strip leading whitespace
-    $data =~ s/^\s*//;
+    trim(\$data);
 
     if (my $class = select_feed_class(substr($data, 0, 1024))) {
         _debug("Using $class to parse $source");
@@ -77,9 +77,7 @@ sub _debug {
     if ($DEBUG) {
         my $msg = join " ", map {
             my $m = $_;
-            $m =~ s/^\s*//;
-            $m =~ s/\s*$//;
-            $m;
+            trim($m);
         } @_;
         chomp $msg;
         warn "$msg\n";
