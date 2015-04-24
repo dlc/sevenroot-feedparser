@@ -209,6 +209,11 @@ sub trim {
     return $str;
 }
 
+# ----------------------------------------------------------------------
+# unescape($str)
+#
+# Remove XML cruft around/about a string.
+# ----------------------------------------------------------------------
 sub unescape {
     my $str = shift || return;
 

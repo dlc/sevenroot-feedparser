@@ -29,7 +29,7 @@ sub parse {
 # ----------------------------------------------------------------------
 # extract_channel(\$data)
 #
-# Extract the <channel> element from an RSS feed
+# Extract the <channel> element from an RSS feed.
 # ----------------------------------------------------------------------
 sub extract_channel {
     my $class = shift;
@@ -106,7 +106,7 @@ sub extract_channel {
 # ----------------------------------------------------------------------
 # extract_items(\$data)
 #
-# Extract the <item> elements from an RSS feed
+# Extract the <item> elements from an RSS feed.
 # ----------------------------------------------------------------------
 sub extract_items {
     my $class = shift;
