@@ -1,9 +1,11 @@
 package Sevenroot::FeedParser::Util;
 
 use strict;
-use vars qw(@EXPORT);
+use vars qw(@EXPORT $VERSION);
 use vars qw($RSS2_DOCS_LINK $ATOM_DOCS_LINK);
 use base qw(Exporter);
+
+$VERSION = "0.2b";
 
 @EXPORT = qw(
     docs_link

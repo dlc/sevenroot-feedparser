@@ -1,7 +1,10 @@
 package Sevenroot::FeedParser::Atom;
 
 use strict;
+use vars qw($VERSION);
 use Sevenroot::FeedParser::Util;
+
+$VERSION = "0.2b";
 
 # ----------------------------------------------------------------------
 # parse(\$data, $source)
