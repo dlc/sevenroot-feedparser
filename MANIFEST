@@ -1,5 +1,6 @@
 lib/Sevenroot/FeedParser.pm
 lib/Sevenroot/FeedParser/Atom.pm
+lib/Sevenroot/FeedParser/CookBook.pod
 lib/Sevenroot/FeedParser/RSS2.pm
 lib/Sevenroot/FeedParser/Util.pm
 LICENSE
@@ -19,3 +20,4 @@ t/testdata/stuff-you-should-know.atom
 t/testdata/wordpress.atom
 t/testdata/wordpress.rss
 t/util.t
+update-version
