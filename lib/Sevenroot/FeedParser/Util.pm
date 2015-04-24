@@ -213,6 +213,8 @@ sub unescape {
     my $str = shift || return;
 
     if (ref $str) {
+        $$str =~ s/^<!\[CDATA\[//;
+        $$str =~ s/\]\]>$//;
         $$str =~ s/&lt;/</g;
         $$str =~ s/&gt;/>/g;
         $$str =~ s/&quot;/"/g;
@@ -221,6 +223,8 @@ sub unescape {
     }
 
     else {
+        $str =~ s/^<!\[CDATA\[//;
+        $str =~ s/\]\]>$//;
         $str =~ s/&lt;/</g;
         $str =~ s/&gt;/>/g;
         $str =~ s/&quot;/"/g;
@@ -229,7 +233,6 @@ sub unescape {
     }
 
     return $str;
-
 }
 
 1;
