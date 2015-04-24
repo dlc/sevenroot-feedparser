@@ -119,7 +119,7 @@ sub extract_items {
         my %entry;
 
         # Simple scalar fields
-        for my $field (qw(title link description comments guid pubDate author)) {
+        for my $field (qw(title link description comments pubDate author)) {
             if ($raw_entry =~ s!<$field>(.+?)</$field>!!s) {
                 ($entry{ lc $field }) = unescape(trim("$1"));
             }
@@ -155,6 +155,16 @@ sub extract_items {
         }
         else {
             $entry{'enclosure'} = {};
+        }
+
+        # guid is a single tag, potentially with a isPermalink attribute
+        if ($raw_entry =~ s!(<guid.+?</guid>)!!s) {
+            my $raw_guid = "$1";
+            ($entry{'guid'}) = $raw_guid =~ m!>(.+)<!;
+
+        }
+        else {
+            $entry{'guid'} = "";
         }
 
         # Clean up author 
