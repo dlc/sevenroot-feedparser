@@ -14,4 +14,6 @@ t/stuff-you-should-know.atom.t
 t/testdata/rss2-1.xml
 t/testdata/stuff-you-missed-in-history-class.rss
 t/testdata/stuff-you-should-know.atom
+t/testdata/wordpress.atom
+t/testdata/wordpress.rss
 t/util.t
