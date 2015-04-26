@@ -4,7 +4,7 @@ use strict;
 use vars qw($VERSION @EXPORT_OK $DEBUG);
 use base qw(Exporter);
 
-$VERSION = "0.2c";
+$VERSION = "0.2d";
 $DEBUG = 0 unless defined $DEBUG;
 @EXPORT_OK = qw(parsefile parse parseurl);
 
@@ -162,4 +162,4 @@ of the data, like xml properties (language) and xml namespaces.
 
 =head1 VERSION
 
-This document describes C<Sevenroot::FeedParser> version 0.2c.
+This document describes C<Sevenroot::FeedParser> version 0.2d.
