@@ -19,5 +19,7 @@ t/testdata/stuff-you-missed-in-history-class.rss
 t/testdata/stuff-you-should-know.atom
 t/testdata/wordpress.atom
 t/testdata/wordpress.rss
+t/testdata/zelda-project.atom
+t/testdata/zelda-project.rss
 t/util.t
 update-version
