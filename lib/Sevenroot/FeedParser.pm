@@ -57,7 +57,10 @@ sub parse {
     _debug("head(\$data) = '", substr($data, 0, 100), "'...");
 
     # Strip all XML directives
-    $data =~ s!<\?.+?\?>!!g;
+    $data =~ s!<\?.+?\?>!!sg;
+
+    # Strip all comments
+    $data =~ s/<!--.+?-->//sg;
 
     # Strip leading whitespace
     trim(\$data);
