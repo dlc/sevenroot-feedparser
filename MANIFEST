@@ -24,4 +24,5 @@ t/testdata/wordpress.rss
 t/testdata/zelda-project.atom
 t/testdata/zelda-project.rss
 t/util.t
+t/version.t
 update-version
