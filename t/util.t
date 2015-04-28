@@ -19,11 +19,11 @@ use_ok("Sevenroot::FeedParser::Utils", qw(trim));
 use_ok("Sevenroot::FeedParser::Utils", qw(unescape));
 
 is(docs_link('RSS'),
-   'http://cyber.law.harvard.edu/rss/rss.html',
+   $Sevenroot::FeedParser::Utils::RSS2_DOCS_LINK,
    "rss docs link");
 
 is(docs_link('Atom'),
-   'http://atomenabled.org/',
+   $Sevenroot::FeedParser::Utils::ATOM_DOCS_LINK,
    "atom docs link");
 
 is(extract_email_address('Darren Chamberlain <darren@cpan.org>'),
@@ -36,7 +36,7 @@ is(extract_root_element(\$xml),
    $root,
    "extract root element");
 
-is_deeply(extract_attributes("<$root>", "foo"),
+is_deeply(scalar extract_attributes("<$root>", "foo"),
           { foo => "bar" },
           "extract attributes");
    
