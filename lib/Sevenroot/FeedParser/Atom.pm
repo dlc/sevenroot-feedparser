@@ -34,7 +34,42 @@ sub extract_items {
     my @entries = ();
 
     while ($$data =~ s!<entry>(.+?)</entry>!!s) {
-        push @entries, { raw => "$1" };
+        my $entry = "$1";
+        my %entry;
+
+        # Extract basic fields, based on http://atomenabled.org/developers/syndication/
+        %entry = extract_nested_tags($entry, qw(
+            id title updated content summary published updated rights));
+
+        if ($entry =~ s!<media:description>(.+?)</media:description>!!s) {
+            $entry{'content'} = "$1";
+        }
+
+        $entry{'categories'} = $class->extract_categories($entry);
+
+        # People
+        $entry{'contributors'} = $class->extract_person($entry, "contributor");
+        $entry{'author'} = $class->extract_person($entry, "author");
+
+        # Fix links
+        $entry{'links'} = $class->extract_links($entry);
+        if ($entry{'links'}->{'alternate'}) {
+            $entry{'link'} = $entry{'links'}->{'alternate'}->{'href'};
+        }
+        if ($entry{'links'}->{'enclosure'}) {
+            $entry{'enclosure'} = {
+                url => $entry{'links'}->{'enclosure'}->{'href'}
+            }
+        }
+
+        # Normalize date fields
+        for my $date_field (qw(published updated)) {
+            if (my $date_str = delete $entry{$date_field}) {
+                $entry{ lc $date_field } = normalize_date($date_str);
+            }
+        }
+
+        push @entries, \%entry;
     }
 
     return \@entries;
@@ -45,68 +80,69 @@ sub extract_channel {
     my $data = shift;
     my %channel;
 
-#warn "data = '$$data'\n";
-
     # Extract basic fields, based on http://atomenabled.org/developers/syndication/
-    for my $field (qw(
-        id title updated
-        icon logo rights subtitle
-        generator
-    )) {
-        if ($$data =~ s!<$field>(.+?)</$field>!!s) {
-            ($channel{ lc $field }) = unescape(trim("$1"));
-        }
-        elsif ($$data =~ s!<$field\s+.+?>(.+?)</$field>!!s) {
-            ($channel{ lc $field }) = unescape(trim("$1"));
-        }
-        else {
-            $channel{ lc $field } = "";
-        }
-    }
+    %channel = extract_nested_tags($$data, qw(
+        id title updated icon logo rights subtitle generator));
 
     # Links
-    $channel{'links'} = {};
-    while ($$data =~ s!<(link\s+.+?)/>!!s) {
-        my $bits = extract_attributes("$1",
-            qw(href rel type hreflang title length));
-        $channel{'links'}->{ $bits->{'rel'} } = $bits;
-    }
+    $channel{'links'} = $class->extract_links($$data);
     if ($channel{'links'}->{'alternate'}) {
         $channel{'link'} = $channel{'links'}->{'alternate'}->{'href'};
     }
 
     # Categories
-    $channel{'categories'} = [];
-    while ($$data =~ s!<(category\s+.+?)/>!!s) {
-        my $bits = extract_attributes("$1", qw(term scheme label));
-        push @{ $channel{'categories'} }, $bits;
-    }
+    $channel{'categories'} = $class->extract_categories($$data);
 
     # Contributor
-    $channel{'contributors'} = [];
-    while ($$data =~ s!<contributor>(.+?)</contributor>!!s) {
-        my $contrib = "$1";
-        my %contrib;
-        for my $field (qw(name uri email)) {
-            if ($contrib =~ s!<$field>(.+?)</$field>!!s) {
-                ($contrib{ $field }) = unescape(trim("$1"));
-            }
-            else {
-                $contrib{ $field } = "";
-            }
-        }
-        
-        push @{ $channel{'contributors'} }, \%contrib;
-    }
+    $channel{'contributors'} = $class->extract_person($$data, "contributor");
 
     # Normalize date fields
-    for my $date_field (qw(updated)) {
+    for my $date_field (qw(published updated)) {
         if (my $date_str = delete $channel{$date_field}) {
             $channel{ lc $date_field } = normalize_date($date_str);
         }
     }
 
     return \%channel;
+}
+
+sub extract_categories {
+    my $class = shift;
+    my $data = shift;
+    my @cat;
+
+    while ($data =~ s!<(category\s+.+?)/>!!s) {
+        push @cat, scalar extract_attributes("$1", qw(term scheme label));
+    }
+
+    return \@cat;
+}
+
+sub extract_person {
+    my $class = shift;
+    my $data = shift;
+    my $tag = shift;
+    my @people;
+
+    while ($data =~ s!<$tag>(.+?)</$tag>!!s) {
+        push @people, { extract_nested_tags("$1", qw(name uri email)) }
+    }
+
+    return \@people;
+}
+
+sub extract_links {
+    my $class = shift;
+    my $data = shift;
+    my %links;
+
+    while ($data =~ s!<(link\s+.+?)/>!!s) {
+        my $bits = extract_attributes("$1",
+            qw(href rel type hreflang title length));
+        $links{ $bits->{'rel'} } = $bits;
+    }
+
+    return \%links;
 }
 
 1;
