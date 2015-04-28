@@ -5,7 +5,7 @@ use vars qw(@EXPORT $VERSION);
 use vars qw($RSS2_DOCS_LINK $ATOM_DOCS_LINK);
 use base qw(Exporter);
 
-$VERSION = "0.2d";
+$VERSION = "0.2e";
 
 @EXPORT = qw(
     docs_link
