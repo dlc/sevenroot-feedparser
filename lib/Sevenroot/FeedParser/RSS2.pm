@@ -4,7 +4,7 @@ use strict;
 use vars qw($VERSION);
 use Sevenroot::FeedParser::Utils;
 
-$VERSION = "0.3";
+$VERSION = "0.3a";
 
 # ----------------------------------------------------------------------
 # parse(\$data, $source)

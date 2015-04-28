@@ -1,4 +1,4 @@
 
 =head1 VERSION
 
-This document describes C<Sevenroot::FeedParser> version 0.3.
+This document describes C<Sevenroot::FeedParser> version 0.3a.
