@@ -29,12 +29,9 @@ is($feed->{'channel'}->{'image'}->{'link'},
    "http://antwrp.gsfc.nasa.gov/",
    "APOD channel image link test");
 
-SKIP: {
-    skip "https://github.com/dlc/sevenroot-feedparser/issues/9" => 1;
-    is($feed->{'channel'}->{'textinput'}->{'name'},
-        "query",
-        "APOD channel text input test");
-}
+is($feed->{'channel'}->{'textinput'}->{'name'},
+    "query",
+    "APOD channel text input test");
 
 is(scalar @{ $feed->{'entries'} },
    7,
