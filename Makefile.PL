@@ -8,6 +8,6 @@ WriteMakefile(
         'Time::ParseDate' => 0,
     },
     dist => {
-        PREOP => 'perldoc -t lib/Sevenroot/FeedParser.pm > README.pm',
+        PREOP => 'perldoc -t lib/Sevenroot/FeedParser.pm > README.md',
     },
 );

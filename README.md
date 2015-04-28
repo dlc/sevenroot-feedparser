@@ -62,5 +62,5 @@ PARSED DATA STRUCTURE
     (language) and xml namespaces.
 
 VERSION
-    This document describes "Sevenroot::FeedParser" version 0.2d.
+    This document describes "Sevenroot::FeedParser" version 0.3a.
 
