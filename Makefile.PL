@@ -3,7 +3,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     'NAME'      => 'Sevenroot::FeedParser',
-    'VERSION'   => "0.2e",
+    'VERSION'   => "0.3",
     'PREREQ_PM' => {
         'Time::ParseDate' => 0,
     },
