@@ -23,8 +23,8 @@ sub parse {
     $feed{'meta'}->{'source'} = $source;
     $feed{'meta'}->{'namespaces'} = extract_namespaces(\$data);
     $feed{'meta'}->{'xml_attrs'} = extract_xml_attrs(\$data);
-    $feed{'channel'} = $class->extract_channel(\$data);
     $feed{'entries'} = $class->extract_items(\$data);
+    $feed{'channel'} = $class->extract_channel(\$data);
 
     return \%feed;
 }
@@ -38,7 +38,7 @@ sub extract_channel {
     my $class = shift;
     my $data = shift;
     my %channel;
-    my ($channel) = $$data =~ m!<channel>\s*(.+?)\s*<item!s;
+    my ($channel) = $$data =~ m!<channel>\s*(.+?)\s*(?:<item|$)!s;
 
     # Extract known fields, based on http://cyber.law.harvard.edu/rss/rss.html
     for my $field (qw(
@@ -85,10 +85,10 @@ sub extract_channel {
         }
     }
 
-    if (my $image = delete $channel{'textinput'}) {
+    if (my $text_input = delete $channel{'textinput'}) {
         my $i = $channel{'textinput'} = {};
-        for my $field (qw(title desciption name link)) {
-            if ($image =~ m!<$field>(.+?)</$field>!) {
+        for my $field (qw(title description name link)) {
+            if ($text_input =~ m!<$field>(.+?)</$field>!s) {
                 $i->{ $field } = unescape(trim("$1"));
             }
         }
@@ -126,9 +126,8 @@ sub extract_items {
     my $data = shift;
     my @entries = ();
 
-    my (@raw_entries) = $$data =~ m!<item>(.+?)</item>!gs;
-
-    for my $raw_entry (@raw_entries) {
+    while ($$data =~ s!<item>(.+?)</item>!!s) {
+        my $raw_entry = "$1";
         my %entry;
 
         # Simple scalar fields
