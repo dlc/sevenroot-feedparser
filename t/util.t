@@ -7,16 +7,16 @@ use File::Basename qw(basename);
 use FindBin qw($Bin);
 use Test::More tests => 27;
 
-use_ok("Sevenroot::FeedParser::Util", qw(docs_link));
-use_ok("Sevenroot::FeedParser::Util", qw(extract_attributes));
-use_ok("Sevenroot::FeedParser::Util", qw(extract_email_address));
-use_ok("Sevenroot::FeedParser::Util", qw(extract_namespaces));
-use_ok("Sevenroot::FeedParser::Util", qw(extract_root_element));
-use_ok("Sevenroot::FeedParser::Util", qw(extract_xml_attrs));
-use_ok("Sevenroot::FeedParser::Util", qw(normalize_date));
-use_ok("Sevenroot::FeedParser::Util", qw(select_feed_class));
-use_ok("Sevenroot::FeedParser::Util", qw(trim));
-use_ok("Sevenroot::FeedParser::Util", qw(unescape));
+use_ok("Sevenroot::FeedParser::Utils", qw(docs_link));
+use_ok("Sevenroot::FeedParser::Utils", qw(extract_attributes));
+use_ok("Sevenroot::FeedParser::Utils", qw(extract_email_address));
+use_ok("Sevenroot::FeedParser::Utils", qw(extract_namespaces));
+use_ok("Sevenroot::FeedParser::Utils", qw(extract_root_element));
+use_ok("Sevenroot::FeedParser::Utils", qw(extract_xml_attrs));
+use_ok("Sevenroot::FeedParser::Utils", qw(normalize_date));
+use_ok("Sevenroot::FeedParser::Utils", qw(select_feed_class));
+use_ok("Sevenroot::FeedParser::Utils", qw(trim));
+use_ok("Sevenroot::FeedParser::Utils", qw(unescape));
 
 is(docs_link('RSS'),
    'http://cyber.law.harvard.edu/rss/rss.html',

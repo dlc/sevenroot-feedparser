@@ -2,7 +2,7 @@ package Sevenroot::FeedParser::RSS2;
 
 use strict;
 use vars qw($VERSION);
-use Sevenroot::FeedParser::Util;
+use Sevenroot::FeedParser::Utils;
 
 $VERSION = "0.2e";
 

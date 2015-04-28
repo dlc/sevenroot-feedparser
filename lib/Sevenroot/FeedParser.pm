@@ -8,7 +8,8 @@ $VERSION = "0.2e";
 $DEBUG = 0 unless defined $DEBUG;
 @EXPORT_OK = qw(parsefile parse parseurl);
 
-use Sevenroot::FeedParser::Util;
+use Sevenroot::FeedParser::Utils;
+use Sevenroot::Utils qw(fullpath);
 
 # ----------------------------------------------------------------------
 # parsefile($filename)
@@ -16,7 +17,7 @@ use Sevenroot::FeedParser::Util;
 # Parses $filename and returns a data structure
 # ----------------------------------------------------------------------
 sub parsefile {
-    my $filename = shift;
+    my $filename = fullpath(shift);
 
     my $data = do {
         if (open my $fh, $filename) {
