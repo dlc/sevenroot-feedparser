@@ -7,4 +7,7 @@ WriteMakefile(
     'PREREQ_PM' => {
         'Time::ParseDate' => 0,
     },
+    dist => {
+        PREOP => 'perldoc -t lib/Sevenroot/FeedParser.pm > README.pm',
+    },
 );
