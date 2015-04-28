@@ -50,5 +50,9 @@ for my $file (keys %found) {
 
 plan tests => scalar keys %found;
 for my $file (keys %found) {
-    is($found{ $file }, $canon_ver, "Version number for $file matches $canon_ver");
+    is($found{ $file },
+       $canon_ver,
+       "Version number for " .
+           basename($file) .
+           " matches $canon_ver");
 }
