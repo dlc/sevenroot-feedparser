@@ -7,7 +7,7 @@ LICENSE
 Makefile.PL
 MANIFEST			This list of files
 MANIFEST.SKIP
-README.md
+README
 t/apod.rss.t
 t/maddox.atom.t
 t/rss2-1.xml.t
