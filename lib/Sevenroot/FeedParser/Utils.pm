@@ -12,6 +12,7 @@ $VERSION = "0.3";
     extract_attributes
     extract_email_address
     extract_namespaces
+    extract_nested_tags
     extract_root_element
     extract_xml_attrs
     normalize_date
@@ -21,7 +22,7 @@ $VERSION = "0.3";
 );
 
 $RSS2_DOCS_LINK = 'http://cyber.law.harvard.edu/rss/rss.html';
-$ATOM_DOCS_LINK = 'http://atomenabled.org/';
+$ATOM_DOCS_LINK = 'http://atomenabled.org/developers/syndication/';
 
 use Time::ParseDate qw(parsedate);
 
@@ -134,13 +135,34 @@ sub extract_attributes {
     }
 
     for my $attr (@attrs) {
-        if ($str =~ s!$attr=(['"])(.+?)\1!!) {
+        if ($str =~ s!$attr=(['"])(.*?)\1!!) {
             $attrs{ lc $attr } = unescape(trim("$2"));
         }
     }
 
-    return \%attrs;
+    return wantarray ? %attrs : \%attrs;
 }
+
+# ----------------------------------------------------------------------
+# extract_nested_tags($data, @elements)
+# ----------------------------------------------------------------------
+sub extract_nested_tags {
+    my $data = shift;
+    my @wanted = @_;
+    my %tags;
+
+    for my $tag (@wanted) {
+        if ($data =~ s!<$tag.*?>(.+?)</$tag>!!s) {
+            ($tags{ $tag }) = unescape(trim("$1"));
+        }
+        else {
+            $tags{ $tag } = "";
+        }
+    }
+
+    return wantarray ? %tags : \%tags;
+}
+
 
 # ----------------------------------------------------------------------
 # docs_link($feed_type)
