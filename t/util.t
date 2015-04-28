@@ -5,7 +5,7 @@ use strict;
 use File::Spec::Functions qw(catfile);
 use File::Basename qw(basename);
 use FindBin qw($Bin);
-use Test::More tests => 27;
+use Test::More tests => 28;
 
 use_ok("Sevenroot::FeedParser::Utils", qw(docs_link));
 use_ok("Sevenroot::FeedParser::Utils", qw(extract_attributes));
@@ -35,6 +35,12 @@ my $xml = "<$root><baz/></rss>";
 is(extract_root_element(\$xml),
    $root,
    "extract root element");
+
+my $root = "rss\nfoo='bar'";
+my $xml = "<$root><baz/></rss>";
+is(extract_root_element(\$xml),
+   $root,
+   "extract root element with newline");
 
 is_deeply(scalar extract_attributes("<$root>", "foo"),
           { foo => "bar" },
