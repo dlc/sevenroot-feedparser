@@ -190,7 +190,8 @@ sub extract_items {
         }
 
         # Other common fields
-        for my $field (qw(wfw:commentRss slash:comments dc:creator)) {
+        for my $field (qw(wfw:commentRss slash:comments
+                          dc:creator feedburner:origLink)) {
             if ($raw_entry =~ s!<$field>(.+?)</$field>!!s) {
                 ($entry{ lc $field }) = unescape(trim("$1"));
             }
